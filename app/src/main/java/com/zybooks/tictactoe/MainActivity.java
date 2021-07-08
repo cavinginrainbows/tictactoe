@@ -36,23 +36,25 @@ public class MainActivity extends AppCompatActivity {
 
         mGame = new TicTacToeGame();
 
-        if (savedInstanceState == null) {
-            startGame();
-        }
-        else {
-            String gameState = savedInstanceState.getString("gameState");
-            boolean gameStatus = savedInstanceState.getBoolean("gameStatus");
-            boolean playerTurn = savedInstanceState.getBoolean("playerTurn");
-            int roundCount = savedInstanceState.getInt("roundCount");
-            String winText = savedInstanceState.getString("winText");
-
-            setState(gameState);
-            mGame.setGameOver(gameStatus);
-            mGame.setPlayerXTurn(playerTurn);
-            mGame.setRoundCount(roundCount);
-            mGame.setWinText(winText);
-            messageTextView.setText(mGame.getWinText());
-        }
+        startGame();
+//
+//        if (savedInstanceState == null) {
+//            startGame();
+//        }
+//        else {
+//            String gameState = savedInstanceState.getString("gameState");
+//            boolean gameStatus = savedInstanceState.getBoolean("gameStatus");
+//            boolean playerTurn = savedInstanceState.getBoolean("playerTurn");
+//            int roundCount = savedInstanceState.getInt("roundCount");
+//            String winText = savedInstanceState.getString("winText");
+//
+//            setState(gameState);
+//            mGame.setGameOver(gameStatus);
+//            mGame.setPlayerXTurn(playerTurn);
+//            mGame.setRoundCount(roundCount);
+//            mGame.setWinText(winText);
+//            messageTextView.setText(mGame.getWinText());
+//        }
     }
 
     @Override
@@ -64,6 +66,24 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("playerTurn", mGame.getPlayerXTurn());
         outState.putInt("roundCount", mGame.getRoundCount());
         outState.putString("winText", mGame.getWinText());
+    }
+
+    @Override
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        String gameState = savedInstanceState.getString("gameState");
+        boolean gameStatus = savedInstanceState.getBoolean("gameStatus");
+        boolean playerTurn = savedInstanceState.getBoolean("playerTurn");
+        int roundCount = savedInstanceState.getInt("roundCount");
+        String winText = savedInstanceState.getString("winText");
+
+        setState(gameState);
+        mGame.setGameOver(gameStatus);
+        mGame.setPlayerXTurn(playerTurn);
+        mGame.setRoundCount(roundCount);
+        mGame.setWinText(winText);
+        messageTextView.setText(mGame.getWinText());
     }
 
     private void startGame() {
@@ -97,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         mGame.takeTurn(setBoard());
 
-        if (mGame.getGameOver()) {
-            messageTextView.setText(mGame.getWinText());
-        }
+        messageTextView.setText(mGame.getWinText());
 
     }
 
