@@ -24,11 +24,11 @@ public class TicTacToeGame {
             else {
                 setWinText("Player O wins!");
             }
-            endGame();
+            setGameOver(true);
         }
         else if (roundCount == 9) {
             setWinText("It's a draw.");
-            endGame();
+            setGameOver(true);
         }
         else {
             playerXTurn = !playerXTurn;
@@ -36,7 +36,6 @@ public class TicTacToeGame {
     }
 
     private boolean checkForWin(String[][] field) {
-
         for (int i = 0; i < 3; i++) {
             if (field[i][0].equals(field[i][1])
                     && field[i][0].equals(field[i][2])
@@ -64,12 +63,20 @@ public class TicTacToeGame {
         return false;
     }
 
-    public boolean isPlayerXTurn() {
+    public boolean getPlayerXTurn() {
         return playerXTurn;
     }
 
-    public boolean isGameOver() {
+    public void setPlayerXTurn(boolean playerTurn) {
+        playerXTurn = playerTurn;
+    }
+
+    public boolean getGameOver() {
         return gameOver;
+    }
+
+    public void setGameOver(boolean gameStatus) {
+        gameOver = gameStatus;
     }
 
     public String getWinText() {
@@ -80,7 +87,12 @@ public class TicTacToeGame {
         winText = txt;
     }
 
-    public void endGame() {
-        gameOver = true;
+    public int getRoundCount() {
+        return roundCount;
     }
+
+    public void setRoundCount(int round) {
+        roundCount = round;
+    }
+
 }

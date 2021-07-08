@@ -1,14 +1,16 @@
 package com.zybooks.tictactoe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
+//    private final String TAG = "TicTacToe";
     private TicTacToeGame mGame;
     private Button[][] gameGrid;
     private TextView messageTextView;
@@ -33,7 +35,35 @@ public class MainActivity extends AppCompatActivity {
         messageTextView = (TextView) findViewById(R.id.messageTextView);
 
         mGame = new TicTacToeGame();
-        startGame();
+
+        if (savedInstanceState == null) {
+            startGame();
+        }
+        else {
+            String gameState = savedInstanceState.getString("gameState");
+            boolean gameStatus = savedInstanceState.getBoolean("gameStatus");
+            boolean playerTurn = savedInstanceState.getBoolean("playerTurn");
+            int roundCount = savedInstanceState.getInt("roundCount");
+            String winText = savedInstanceState.getString("winText");
+
+            setState(gameState);
+            mGame.setGameOver(gameStatus);
+            mGame.setPlayerXTurn(playerTurn);
+            mGame.setRoundCount(roundCount);
+            mGame.setWinText(winText);
+            messageTextView.setText(mGame.getWinText());
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("gameState", getState());
+        outState.putBoolean("gameStatus", mGame.getGameOver());
+        outState.putBoolean("playerTurn", mGame.getPlayerXTurn());
+        outState.putInt("roundCount", mGame.getRoundCount());
+        outState.putString("winText", mGame.getWinText());
     }
 
     private void startGame() {
@@ -52,29 +82,65 @@ public class MainActivity extends AppCompatActivity {
 
     public void onGridButtonClick(View view) {
 
-        if (mGame.isGameOver()) {
+        if (mGame.getGameOver()) {
             return;
         }
         if (!((Button) view).getText().toString().equals("")) {
             return;
         }
-        if (mGame.isPlayerXTurn()) {
+        if (mGame.getPlayerXTurn()) {
             ((Button) view).setText("X");
         }
         else {
             ((Button) view).setText("O");
         }
 
-        String[][] field = new String[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                field[i][j] = gameGrid[i][j].getText().toString();
-            }
-        }
-        mGame.takeTurn(field);
+        mGame.takeTurn(setBoard());
 
-        if (mGame.isGameOver()) {
+        if (mGame.getGameOver()) {
             messageTextView.setText(mGame.getWinText());
         }
+
     }
+
+    public String[][] setBoard() {
+        String [][] mBoard = new String[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                mBoard[i][j] = gameGrid[i][j].getText().toString();
+            }
+        }
+        return mBoard;
+    }
+
+    public String getState() {
+        StringBuilder boardString = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameGrid[i][j].getText().toString().equals("")) {
+                    boardString.append(" ");
+                }
+                else {
+                    boardString.append(gameGrid[i][j].getText().toString());
+                }
+            }
+        }
+        return boardString.toString();
+    }
+
+    public void setState(String gameState) {
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameState.charAt(index) == ' ') {
+                    gameGrid[i][j].setText("");
+                }
+                else {
+                    gameGrid[i][j].setText(Character.toString(gameState.charAt(index)));
+                }
+                index++;
+            }
+        }
+    }
+
 }
