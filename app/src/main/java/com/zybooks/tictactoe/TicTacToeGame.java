@@ -10,7 +10,7 @@ public class TicTacToeGame {
     public void newGame() {
         roundCount = 0;
         playerXTurn = true;
-        winText = "";
+        winText = "Player X's turn";
         gameOver = false;
     }
 
@@ -32,6 +32,12 @@ public class TicTacToeGame {
         }
         else {
             playerXTurn = !playerXTurn;
+            if (playerXTurn) {
+                setWinText("Player X's turn");
+            }
+            else {
+                setWinText("Player O's turn");
+            }
         }
     }
 
