@@ -37,24 +37,6 @@ public class MainActivity extends AppCompatActivity {
         mGame = new TicTacToeGame();
 
         startGame();
-//
-//        if (savedInstanceState == null) {
-//            startGame();
-//        }
-//        else {
-//            String gameState = savedInstanceState.getString("gameState");
-//            boolean gameStatus = savedInstanceState.getBoolean("gameStatus");
-//            boolean playerTurn = savedInstanceState.getBoolean("playerTurn");
-//            int roundCount = savedInstanceState.getInt("roundCount");
-//            String winText = savedInstanceState.getString("winText");
-//
-//            setState(gameState);
-//            mGame.setGameOver(gameStatus);
-//            mGame.setPlayerXTurn(playerTurn);
-//            mGame.setRoundCount(roundCount);
-//            mGame.setWinText(winText);
-//            messageTextView.setText(mGame.getWinText());
-//        }
     }
 
     @Override
@@ -84,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         mGame.setRoundCount(roundCount);
         mGame.setWinText(winText);
         messageTextView.setText(mGame.getWinText());
+    }
+
+    public void onBackPressed() {
+        moveTaskToBack(false);
     }
 
     private void startGame() {
